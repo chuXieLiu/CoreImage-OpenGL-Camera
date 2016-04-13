@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreMedia/CoreMedia.h>
 
 @interface CXMovieWriter : NSObject
+
+- (instancetype)initWithVideoSettings:(NSDictionary *)videoSettings
+                        audioSettings:(NSDictionary *)audioSettings
+                        dispatchQueue:(dispatch_queue_t)dispatchQueue;
+- (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer;    // 实时采样
+- (void)startWriting;
+- (void)stopWriting;
+
 
 @end

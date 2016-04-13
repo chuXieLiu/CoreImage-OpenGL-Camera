@@ -18,9 +18,12 @@
 - (void)startRecorded;
 - (void)stopRecorded;
 
+@property (nonatomic,assign,readonly) bool isRecorded;
+
 // 串行队列
 @property (nonatomic,strong,readonly) dispatch_queue_t captureQueue;
 
 @property (nonatomic,weak) id<CXImageTransport> imageTarget;
+
 
 @end

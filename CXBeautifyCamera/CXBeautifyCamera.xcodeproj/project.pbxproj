@@ -452,6 +452,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CXBeautifyCamera/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = CX.CXBeautifyCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -463,6 +464,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CXBeautifyCamera/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = CX.CXBeautifyCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -512,6 +514,7 @@
 				F9E0C09E1CBCF47000D6AC10 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F9E0C09F1CBCF47000D6AC10 /* Build configuration list for PBXNativeTarget "CXBeautifyCameraTests" */ = {
 			isa = XCConfigurationList;
@@ -520,6 +523,7 @@
 				F9E0C0A11CBCF47000D6AC10 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

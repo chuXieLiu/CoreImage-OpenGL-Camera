@@ -8,6 +8,7 @@
 
 #import "CXBeautifyCameraManager.h"
 #import <AVFoundation/AVFoundation.h>
+#import "CXMovieWriter.h"
 
 @interface CXBeautifyCameraManager ()
 <
@@ -21,8 +22,11 @@
 
 @property (nonatomic,strong) AVCaptureVideoDataOutput *videoDataOutput;
 
-
 @property (nonatomic,strong,readwrite) dispatch_queue_t captureQueue;
+
+@property (nonatomic,strong) CXMovieWriter *movieWriter;
+
+@property (nonatomic,assign,readwrite) bool isRecorded;
 
 
 @end
@@ -78,12 +82,12 @@
     
     // 在跟OpenGL ES上，苹果建议使用kCVPixelFormatType_32BGRA
     
-    NSDictionary *videoSettings = @{
+    NSDictionary *videoOutputSettings = @{
                                     (NSString *)kCVPixelBufferPixelFormatTypeKey:
                                         @(kCVPixelFormatType_32BGRA)
                                     };
     
-    videoDataOutput.videoSettings = videoSettings;
+    videoDataOutput.videoSettings = videoOutputSettings;
     
     // 捕捉全部可用帧，保持实时性，会带来一定内存消耗
     
@@ -108,6 +112,16 @@
         [self.captureSession addOutput:audioDataOutput];
     }
     
+    // asset writer
+    // 将videoOutput和audioOuput的配置传递给assetWriter
+    
+    NSDictionary *videoSettings = [self.videoDataOutput recommendedVideoSettingsForAssetWriterWithOutputFileType:AVFileTypeQuickTimeMovie];
+    
+    NSDictionary *audioSettings = [audioDataOutput recommendedAudioSettingsForAssetWriterWithOutputFileType:AVFileTypeQuickTimeMovie];
+    
+    self.movieWriter = [[CXMovieWriter alloc] initWithVideoSettings:videoSettings
+                                                      audioSettings:audioSettings
+                                                      dispatchQueue:self.captureQueue];
     
 }
 
@@ -134,13 +148,15 @@
 
 - (void)startRecorded
 {
-    
+    self.isRecorded = YES;
+    [self.movieWriter startWriting];
 }
 
 
 - (void)stopRecorded
 {
-    
+    self.isRecorded = NO;
+    [self.movieWriter stopWriting];
 }
 
 
@@ -149,8 +165,11 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+    // 实时采样待处理
+    [self.movieWriter processSampleBuffer:sampleBuffer];
+    
     if (captureOutput == self.videoDataOutput) {
-        
+        // 实时采样滤镜处理
         CVPixelBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
         
         CIImage *sourceImage = [CIImage imageWithCVPixelBuffer:imageBuffer options:NULL];
@@ -161,7 +180,12 @@
 
 
 
-
+- (void)dealloc
+{
+    if ([self.captureSession isRunning]) {
+        [self.captureSession stopRunning];
+    }
+}
 
 
 
