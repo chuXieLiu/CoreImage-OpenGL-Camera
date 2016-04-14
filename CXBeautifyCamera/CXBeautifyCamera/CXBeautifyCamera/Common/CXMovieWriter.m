@@ -13,6 +13,7 @@
 #import "CXContextManager.h"
 #import "CXCameraNotification.h"
 #import "CXPhotoFilter.h"
+#import "UIView+CXExtension.h"
 
 @interface CXMovieWriter ()
 
@@ -184,22 +185,25 @@
 
 - (void)writeMovieAtURL:(NSURL *)outputURL {
     
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:KCXCameraWillWriteVideoNotification object:nil userInfo:nil];
+    });
     
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+
     if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:outputURL]) {
         
-        ALAssetsLibraryWriteVideoCompletionBlock completionBlock;
-        
-        completionBlock = ^(NSURL *assetURL, NSError *error){
-            
-        };
-        
         [library writeVideoAtPathToSavedPhotosAlbum:outputURL
-                                    completionBlock:^(NSURL *assetURL, NSError *error) {
-                                        if (error) {
-                                            NSLog(@"write video error");
-                                        }
-                                    }];
+        completionBlock:^(NSURL *assetURL, NSError *error) {
+
+            if (error) {
+                NSLog(@"write video error");
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:KCXCameraWriteVideoCompletionNotification object:assetURL userInfo:nil];
+                });
+            }
+        }];
     }
 }
 
@@ -245,7 +249,7 @@
         // 创建像素容器
         CVReturn code =  CVPixelBufferPoolCreatePixelBuffer(NULL, pixelBufferPool, &outputRenderBuffer);
         
-        if (code) {
+        if (code != kCVReturnSuccess) {
             NSLog(@"error to get pixel buffer from pool");
             return;
         }

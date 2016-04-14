@@ -39,7 +39,7 @@ ios平台上支持的滤镜有一百多种，Demo中只挑选了几个简单的�
 ![](https://github.com/chuXieLiu/CoreImage-OpenGL-Camera/blob/master/screenshots/_posterize.png?raw=true">)
 
 
-Demo中使用AVAssetWriter和CMSampleBufferRef等处理类对录制进行实时采样和写入，保存滤镜效果。
+Demo中使用AVAssetWriter和CMSampleBufferRef等处理类对录制进行实时采样和写入，保存滤镜效果，当然也支持录制时实时切换滤镜。
 
 
 

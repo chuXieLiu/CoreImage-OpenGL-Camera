@@ -8,5 +8,13 @@
 
 #import "CXCameraNotification.h"
 
+
+// 切换滤镜
 NSString * const kCXCameraFitlerDidChangeNotification = @"kCXCameraFitlerDidChangeNotification";
+
+// 将要写入video
+NSString * const KCXCameraWillWriteVideoNotification = @"KCXCameraWillWriteVideoNotification";
+
+// video写入完毕
+NSString * const KCXCameraWriteVideoCompletionNotification = @"KCXCameraWriteVideoCompletionNotification";
 

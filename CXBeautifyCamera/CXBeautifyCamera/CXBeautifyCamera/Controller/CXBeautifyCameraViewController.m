@@ -15,12 +15,19 @@
 #import "CXShutterButton.h"
 #import "CXFillterSelectedView.h"
 #import "CXCameraNotification.h"
+#import "CXVideoEditView.h"
 
 @interface CXBeautifyCameraViewController ()
 
 @property (nonatomic,strong) CXBeautifyCameraManager *cameraManager;
 
 @property (nonatomic,weak) CXPreviewView *previewView;
+
+@property (nonatomic,weak) CXShutterButton *shutterButton;
+
+@property (nonatomic,weak) CXVideoEditView *videoEditView;
+
+@property (nonatomic,weak) UIActivityIndicatorView *indicator;
 
 @end
 
@@ -34,9 +41,8 @@
     [self setupOverlayView];
     
     [self setupCameraManager];
-    self.view.backgroundColor = [UIColor blackColor];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filterDidChange:) name:kCXCameraFitlerDidChangeNotification object:nil];
+    [self addNotificationObserver];
 }
 
 - (void)dealloc
@@ -55,7 +61,8 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (BOOL)prefersStatusBarHidden {
+- (BOOL)prefersStatusBarHidden
+{
     return YES;
 }
 
@@ -69,6 +76,7 @@
         [self.cameraManager startRecorded];
     } else {
         [self.cameraManager stopRecorded];
+        self.shutterButton.enabled = NO;
     }
 }
 
@@ -81,6 +89,45 @@
 {
     CIFilter *filter = note.object;
     self.previewView.filter = filter;
+}
+
+- (void)videoWillWrite:(NSNotification *)note
+{
+    if (!_indicator) {
+        UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        indicator.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
+        indicator.layer.cornerRadius = 6.0;
+        indicator.layer.masksToBounds = YES;
+        [self.view addSubview:indicator];
+        
+        CGFloat width = 80;
+        CGFloat height = 80;
+        CGFloat x = (self.view.frame.size.width - width) * 0.5;
+        CGFloat y = (self.view.frame.size.height - height) * 0.5;
+        
+        indicator.frame = CGRectMake(x, y, width, height);
+        
+        self.indicator = indicator;
+    }
+    
+    [self.indicator startAnimating];
+}
+
+- (void)videoDidWrite:(NSNotification *)note
+{
+    [self.indicator stopAnimating];
+    NSURL *fileURL = note.object;
+    __weak typeof(self) weakSelf = self;
+    CXVideoEditView *videoEditView = [CXVideoEditView videoEditViewWithVideoURL:fileURL recordAgainBlock:^{
+        weakSelf.shutterButton.enabled = YES;
+        [weakSelf.videoEditView removeFromSuperview];
+    } employVideoBlock:^{
+        weakSelf.shutterButton.enabled = YES;
+        [weakSelf.videoEditView removeFromSuperview];
+    }];
+    [self.view addSubview:videoEditView];
+    videoEditView.frame = self.view.bounds;
+    self.videoEditView = videoEditView;
 }
 
 #pragma mark - private method
@@ -104,6 +151,8 @@
 
 - (void)setupOverlayView
 {
+    self.view.backgroundColor = [UIColor blackColor];
+    
     CGFloat modeViewHeight = 100;
     CGRect modeViewFrame = CGRectMake(0, self.view.height - modeViewHeight, self.view.width, modeViewHeight);
     UIView *modeView = [[UIView alloc] initWithFrame:modeViewFrame];
@@ -121,6 +170,7 @@
     shutterButton.size = CGSizeMake(width, height);
     shutterButton.centerX = modeView.width * 0.5;
     shutterButton.bottom = modeView.height - 10.0f;
+    self.shutterButton = shutterButton;
     
     UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectZero];
     [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
@@ -140,6 +190,15 @@
     
 }
 
+
+- (void)addNotificationObserver
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(filterDidChange:) name:kCXCameraFitlerDidChangeNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoWillWrite:) name:KCXCameraWillWriteVideoNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoDidWrite:) name:KCXCameraWriteVideoCompletionNotification object:nil];
+}
 
 
 

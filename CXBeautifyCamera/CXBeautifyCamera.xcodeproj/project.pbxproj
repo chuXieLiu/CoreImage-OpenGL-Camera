@@ -24,6 +24,7 @@
 		F9E0C0F41CBE179000D6AC10 /* CXFillterSelectedView.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E0C0F31CBE179000D6AC10 /* CXFillterSelectedView.m */; };
 		F9E0C0F71CBE3BF600D6AC10 /* CXCameraNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E0C0F61CBE3BF600D6AC10 /* CXCameraNotification.m */; };
 		F9E0C0FA1CBE421E00D6AC10 /* CXMovieWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E0C0F91CBE421E00D6AC10 /* CXMovieWriter.m */; };
+		F9E0C0FD1CBF2E0B00D6AC10 /* CXVideoEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E0C0FC1CBF2E0B00D6AC10 /* CXVideoEditView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,8 @@
 		F9E0C0F61CBE3BF600D6AC10 /* CXCameraNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXCameraNotification.m; sourceTree = "<group>"; };
 		F9E0C0F81CBE421E00D6AC10 /* CXMovieWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMovieWriter.h; sourceTree = "<group>"; };
 		F9E0C0F91CBE421E00D6AC10 /* CXMovieWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMovieWriter.m; sourceTree = "<group>"; };
+		F9E0C0FB1CBF2E0B00D6AC10 /* CXVideoEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXVideoEditView.h; sourceTree = "<group>"; };
+		F9E0C0FC1CBF2E0B00D6AC10 /* CXVideoEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXVideoEditView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +197,8 @@
 				F9E0C0AE1CBD030F00D6AC10 /* CXPreviewView.m */,
 				F9E0C0F21CBE179000D6AC10 /* CXFillterSelectedView.h */,
 				F9E0C0F31CBE179000D6AC10 /* CXFillterSelectedView.m */,
+				F9E0C0FB1CBF2E0B00D6AC10 /* CXVideoEditView.h */,
+				F9E0C0FC1CBF2E0B00D6AC10 /* CXVideoEditView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -316,6 +321,7 @@
 				F9E0C0AF1CBD030F00D6AC10 /* CXPreviewView.m in Sources */,
 				F9E0C0A91CBCF4D500D6AC10 /* CXBeautifyCameraManager.m in Sources */,
 				F9E0C0851CBCF47000D6AC10 /* ViewController.m in Sources */,
+				F9E0C0FD1CBF2E0B00D6AC10 /* CXVideoEditView.m in Sources */,
 				F9E0C0F41CBE179000D6AC10 /* CXFillterSelectedView.m in Sources */,
 				F9E0C0EE1CBDF82100D6AC10 /* UIView+CXExtension.m in Sources */,
 				F9E0C0821CBCF47000D6AC10 /* AppDelegate.m in Sources */,
