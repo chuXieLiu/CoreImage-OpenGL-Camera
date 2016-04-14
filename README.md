@@ -17,7 +17,6 @@ ios平台上支持的滤镜有一百多种，Demo中只挑选了几个简单的�
                  @"CIColorPosterize",// 海报
                  @"CISepiaTone"// 褐色
                  
-}
 
 ```
 
