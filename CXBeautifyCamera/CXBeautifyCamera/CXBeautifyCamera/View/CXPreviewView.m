@@ -44,30 +44,6 @@
 }
 
 
-CGRect CXCenterCropImageRect(CGRect sourceRect , CGRect previewRect) {
-    
-    // 宽高比
-    
-    CGFloat sourceAspectRatio = sourceRect.size.width / sourceRect.size.height;
-    
-    CGFloat previewAspectRatio = previewRect.size.width / previewRect.size.height;
-    
-    CGRect drawRect = sourceRect;
-    
-    if (sourceAspectRatio > previewAspectRatio) {
-        // sourceRect的height相对比较小，以height为基准
-        CGFloat scaleWidth = drawRect.size.height * previewAspectRatio;
-        drawRect.origin.x += (drawRect.size.width - scaleWidth) * 0.5;
-        drawRect.size.width = scaleWidth;
-    } else {
-        // sourceRect的width相对比较小， 以width为基准
-        CGFloat scaleHeight = drawRect.size.width / previewAspectRatio;
-        drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspectRatio) * 0.5;
-        drawRect.size.height = scaleHeight;
-    }
-    return drawRect;
-}
-
 - (void)setImage:(CIImage *)sourceImage
 {
     // 绑定上下文
@@ -98,7 +74,29 @@ CGRect CXCenterCropImageRect(CGRect sourceRect , CGRect previewRect) {
     [self.filter setValue:nil forKey:kCIInputImageKey];
 }
 
-
+CGRect CXCenterCropImageRect(CGRect sourceRect , CGRect previewRect) {
+    
+    // 宽高比
+    
+    CGFloat sourceAspectRatio = sourceRect.size.width / sourceRect.size.height;
+    
+    CGFloat previewAspectRatio = previewRect.size.width / previewRect.size.height;
+    
+    CGRect drawRect = sourceRect;
+    
+    if (sourceAspectRatio > previewAspectRatio) {
+        // sourceRect的height相对比较小，以height为基准
+        CGFloat scaleWidth = drawRect.size.height * previewAspectRatio;
+        drawRect.origin.x += (drawRect.size.width - scaleWidth) * 0.5;
+        drawRect.size.width = scaleWidth;
+    } else {
+        // sourceRect的width相对比较小， 以width为基准
+        CGFloat scaleHeight = drawRect.size.width / previewAspectRatio;
+        drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspectRatio) * 0.5;
+        drawRect.size.height = scaleHeight;
+    }
+    return drawRect;
+}
 
 
 
